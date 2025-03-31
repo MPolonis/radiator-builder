@@ -50,15 +50,16 @@ The application will be available at `http://localhost:5173` by default.
 
 ## Project Structure
 
-- `/src` - Source code directory
 - `/public` - Static assets
+- `/src` - Source code directory
 - `/src/components` - React components
 - `/src/components/common` - React reusable components
 - `/src/context` - React context
-- `/src/types` - TypeScript type definitions
-- `/src/api` - Function used to fetch data
-- `/src/providers` - Folder for providers such as `i18n` configuration file
 - `/src/locales` - Folder for translations
+- `/src/providers` - Folder for providers such as `i18n` configuration file
+- `/src/services` - Function used to fetch data
+- `/src/types` - TypeScript type definitions
+- `src/utils` - Utils functions
 - `jsonConverter` - Script used to transform a given data which are placed in `radiator_builder_data.txt`
 - `radiatior_builder_data.json` - Data used in the present App
 
