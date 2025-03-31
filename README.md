@@ -53,6 +53,7 @@ The application will be available at `http://localhost:5173` by default.
 - `/src` - Source code directory
 - `/public` - Static assets
 - `/src/components` - React components
+- `/src/components/common` - React reusable components
 - `/src/context` - React context
 - `/src/types` - TypeScript type definitions
 - `/src/api` - Function used to fetch data
