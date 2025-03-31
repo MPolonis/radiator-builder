@@ -1,39 +1,44 @@
-import { useForm } from 'react-hook-form';
-import { useProductContext } from '../context/ProductContext';
+import { useForm } from "react-hook-form"
+import { useProductContext } from "../context/ProductContext"
 
 interface FilterFormData {
-  family: string;
-  minLength: string;
-  maxLength: string;
+  family: string
+  minLength: string
+  maxLength: string
 }
 
 const FilterPanel = () => {
-  const { products, setFilteredProducts } = useProductContext();
-  const { register, handleSubmit, reset } = useForm<FilterFormData>({
+  const { products, setFilteredProducts } = useProductContext()
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FilterFormData>({
     defaultValues: {
-      family: '',
-      minLength: '',
-      maxLength: '',
+      family: "",
+      minLength: "",
+      maxLength: "",
     },
-  });
+  })
 
   const onSubmit = (data: FilterFormData) => {
-    const filtered = products.filter(product => {
-      const matchesFamily = data.family ? product.family === data.family : true;
+    const filtered = products.filter((product) => {
+      const matchesFamily = data.family ? product.family === data.family : true
       const matchesLength =
         (!data.minLength || product.length >= Number(data.minLength)) &&
-        (!data.maxLength || product.length <= Number(data.maxLength));
-      return matchesFamily && matchesLength;
-    });
-    setFilteredProducts(filtered);
-  };
+        (!data.maxLength || product.length <= Number(data.maxLength))
+      return matchesFamily && matchesLength
+    })
+    setFilteredProducts(filtered)
+  }
 
   const handleClear = () => {
-    reset();
-    setFilteredProducts(products);
-  };
+    reset()
+    setFilteredProducts(products)
+  }
 
-  const uniqueFamilies = Array.from(new Set(products.map(p => p.family)));
+  const uniqueFamilies = Array.from(new Set(products.map((p) => p.family)))
 
   return (
     <div className="bg-white p-4 rounded-lg shadow-md mb-6">
@@ -44,38 +49,50 @@ const FilterPanel = () => {
         <div className="flex flex-col">
           <label className="text-sm mb-1">Radiator family</label>
           <select
-            className="border rounded px-3 py-2"
-            {...register('family')}
+            className="border rounded px-3 py-2 appearance-none bg-white"
+            {...register("family")}
           >
             <option value="">All</option>
-            {uniqueFamilies.map(f => (
-              <option key={f} value={f}>{f}</option>
+            {uniqueFamilies.map((f) => (
+              <option key={f} value={f}>
+                {f.charAt(0).toUpperCase() + f.slice(1)}
+              </option>
             ))}
           </select>
         </div>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col relative">
           <label className="text-sm mb-1">Length from (mm)</label>
           <input
             type="number"
             className="border rounded px-3 py-2"
-            {...register('minLength', {
-              min: { value: 0, message: 'Minimum length must be 0 or greater' }
+            {...register("minLength", {
+              min: { value: 0, message: "Minimum length must be 0 or greater" },
             })}
             placeholder="0"
           />
+          {errors.minLength && (
+            <span className="text-red-500 text-sm mt-1 absolute bottom-[-20px]">
+              {errors.minLength.message}
+            </span>
+          )}
         </div>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col relative">
           <label className="text-sm mb-1">Length to (mm)</label>
           <input
             type="number"
             className="border rounded px-3 py-2"
-            {...register('maxLength', {
-              min: { value: 0, message: 'Maximum length must be 0 or greater' }
+            {...register("maxLength", {
+              min: { value: 0, message: "Maximum length must be 0 or greater" },
             })}
             placeholder="1000"
           />
+          {errors.maxLength && (
+            <span className="text-red-500 text-sm mt-1 absolute bottom-[-20px]">
+              {errors.maxLength.message}
+            </span>
+          )}
         </div>
 
         <div className="flex gap-2">
@@ -95,7 +112,7 @@ const FilterPanel = () => {
         </div>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default FilterPanel;
+export default FilterPanel
