@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form"
 import { useProductContext } from "../context/ProductContext"
-
+import { useTranslation } from "react-i18next"
 interface FilterFormData {
   family: string
   minLength: string
@@ -21,6 +21,7 @@ const FilterPanel = () => {
       maxLength: "",
     },
   })
+  const { t } = useTranslation()
 
   const onSubmit = (data: FilterFormData) => {
     const filtered = products.filter((product) => {
@@ -47,12 +48,12 @@ const FilterPanel = () => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="flex flex-col">
-          <label className="text-sm mb-1">Radiator family</label>
+          <label className="text-sm mb-1">{t("filter.radiatorFamily")}</label>
           <select
             className="border rounded px-3 py-2 appearance-none bg-white"
             {...register("family")}
           >
-            <option value="">All</option>
+            <option value="">{t("filter.all")}</option>
             {uniqueFamilies.map((f) => (
               <option key={f} value={f}>
                 {f.charAt(0).toUpperCase() + f.slice(1)}
@@ -62,12 +63,13 @@ const FilterPanel = () => {
         </div>
 
         <div className="flex flex-col relative">
-          <label className="text-sm mb-1">Length from (mm)</label>
+          <label className="text-sm mb-1">{t("filter.lengthFrom")}</label>
           <input
             type="number"
             className="border rounded px-3 py-2"
             {...register("minLength", {
-              min: { value: 0, message: "Minimum length must be 0 or greater" },
+              min: { value: 0, message: t("validation.minLength") },
+              pattern: { value: /^[0-9]*$/, message: t("validation.minLength") }
             })}
             placeholder="0"
           />
@@ -79,12 +81,13 @@ const FilterPanel = () => {
         </div>
 
         <div className="flex flex-col relative">
-          <label className="text-sm mb-1">Length to (mm)</label>
+          <label className="text-sm mb-1">{t("filter.lengthTo")}</label>
           <input
             type="number"
             className="border rounded px-3 py-2"
             {...register("maxLength", {
-              min: { value: 0, message: "Maximum length must be 0 or greater" },
+              min: { value: 0, message: t("validation.maxLength") },
+              pattern: { value: /^[0-9]*$/, message: t("validation.maxLength") }
             })}
             placeholder="1000"
           />
@@ -101,13 +104,13 @@ const FilterPanel = () => {
             className="w-full px-4 py-2 rounded bg-gray-200 hover:bg-gray-300"
             onClick={handleClear}
           >
-            Clear
+            {t("filter.button.clear")}
           </button>
           <button
             type="submit"
             className="w-full px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
           >
-            Search
+            {t("filter.button.search")}
           </button>
         </div>
       </form>

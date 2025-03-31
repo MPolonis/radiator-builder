@@ -1,9 +1,9 @@
 import { useProductContext } from "../context/ProductContext"
 import ProductCard from "./ProductCard"
-
+import { useTranslation } from "react-i18next"
 const ProductList = () => {
   const { filteredProducts, isLoading } = useProductContext()
-
+  const { t } = useTranslation()
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-[400px]">
@@ -16,8 +16,12 @@ const ProductList = () => {
     return (
       <div className="flex justify-center items-center min-h-[400px]">
         <div className="text-center">
-          <h3 className="text-lg font-semibold text-gray-900">No products found</h3>
-          <p className="mt-2 text-gray-500">Try adjusting your filters to see more results</p>
+          <h3 className="text-lg font-semibold text-gray-900">
+            {t("emptyState.title")}
+          </h3>
+          <p className="mt-2 text-gray-500">
+            {t("emptyState.description")}
+          </p>
         </div>
       </div>
     )

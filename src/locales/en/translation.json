@@ -1,0 +1,25 @@
+{
+  "title": "Radiator Builder",
+  "validation": {
+    "minLength": "Minimum length must be 0 or greater",
+    "maxLength": "Maximum length must be 0 or greater"
+  },
+  "filter": {
+    "radiatorFamily": "Radiator family",
+    "all": "All",
+    "lengthFrom": "Length from (mm)",
+    "lengthTo": "Length to (mm)",
+    "button": {
+      "clear": "Clear",
+      "search": "Search"
+    }
+  },
+  "emptyState": {
+    "title": "No products found",
+    "description": "Try adjusting your filters to see more results"
+  },
+  "productCard": {
+    "length": "Length",
+    "price": "Price from"
+  }
+}
