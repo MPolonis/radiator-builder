@@ -1,5 +1,7 @@
 import { Product } from "../types/Product"
 
+
+
 interface LengthData {
   id?: string
   sections?: number
@@ -7,24 +9,24 @@ interface LengthData {
   price?: number
 }
 
+type RecordData<T> = Record<string, T>
+
 interface HeightData {
   label?: string
-  lengths?: Record<string, LengthData>
+  lengths?: RecordData<LengthData>
 }
 
 interface DepthData {
   depth?: number
-  heights?: Record<string, HeightData>
+  heights?: RecordData<HeightData>
 }
 
 interface FamilyData {
   id?: string
-  depths?: Record<string, DepthData>
+  depths?: RecordData<DepthData>
 }
 
-interface ProductData {
-  [key: string]: FamilyData
-}
+type ProductData = RecordData<FamilyData>
 
 const transformLengthToProduct = (
   length: LengthData,
@@ -46,24 +48,42 @@ const transformLengthToProduct = (
   }
 }
 
+const extractProductsFromFamily = (family: FamilyData): Product[] => {
+  const familyId = family.id ?? "Unknown"
+  const depths = family.depths ?? {}
+
+  return Object.values(depths).flatMap((depth) =>
+    extractProductsFromDepth(depth, familyId)
+  )
+}
+
+const extractProductsFromDepth = (depth: DepthData, familyId: string): Product[] => {
+  const depthMM = depth.depth ?? 0
+  const heights = depth.heights ?? {}
+
+  return Object.values(heights).flatMap((height) =>
+    extractProductsFromHeight(height, familyId, depthMM)
+  )
+}
+
+const extractProductsFromHeight = (
+  height: HeightData,
+  familyId: string,
+  depthMM: number
+): Product[] => {
+  const label = height.label ?? ""
+  const lengths = height.lengths ?? {}
+
+  return Object.values(lengths)
+    .map((length) => transformLengthToProduct(length, familyId, depthMM, label))
+    .filter((product) => product !== null)
+}
+
 const flattenProductData = (data: ProductData): Product[] => {
-  return Object.values(data).flatMap((family) => {
-    const familyId = family.id ?? "Unknown"
+  const families = Object.values(data)
+  const allProducts = families.flatMap(extractProductsFromFamily)
 
-    return Object.values(family.depths ?? {}).flatMap((depth) => {
-      const depthMM = depth.depth ?? 0
-
-      return Object.values(depth.heights ?? {}).flatMap((height) => {
-        const label = height.label ?? ""
-
-        return Object.values(height.lengths ?? {})
-          .map((length) =>
-            transformLengthToProduct(length, familyId, depthMM, label)
-          )
-          .filter((product): product is Product => product !== null)
-      })
-    })
-  })
+  return allProducts
 }
 
 export default flattenProductData
