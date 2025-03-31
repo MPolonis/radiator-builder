@@ -52,7 +52,7 @@ const FilterPanel = () => {
         <div className="flex flex-col">
           <label className="text-sm mb-1">{t("filter.radiatorFamily")}</label>
           <select
-            className="border rounded px-3 py-2 appearance-none bg-white"
+            className="border rounded px-3 py-2 appearance-none bg-white cursor-pointer"
             {...register("family")}
           >
             <option value="">{t("filter.all")}</option>
