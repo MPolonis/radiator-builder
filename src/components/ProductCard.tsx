@@ -5,7 +5,6 @@ interface Props {
 }
 
 const ProductCard = ({ product }: Props) => {
-  console.log(product)
   return (
     <div className="bg-white shadow-md rounded flex flex-col justify-center items-center h-[300px]">
       <div className="relative w-full h-[150px] flex items-center justify-center">
