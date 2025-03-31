@@ -56,7 +56,7 @@ The application will be available at `http://localhost:5173` by default.
 - `/src/context` - React context
 - `/src/types` - TypeScript type definitions
 - `/src/api` - Function used to fetch data
-- `jsonConverter` - Script used to transform a given data which are placed in radiator_builder_data.txt
+- `jsonConverter` - Script used to transform a given data which are placed in `radiator_builder_data.txt`
 - `radiatior_builder_data.json` - Data used in the present App
 
 ## Contributing
