@@ -41,7 +41,7 @@ const FilterPanel = () => {
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-end"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div className="flex flex-row">
+        <div className="flex flex-col">
           <label className="text-sm mb-1">Radiator family</label>
           <select
             className="border rounded px-3 py-2"
