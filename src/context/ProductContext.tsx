@@ -4,6 +4,7 @@ import {
   useEffect,
   useState,
   ReactNode,
+  useCallback,
 } from "react"
 import fetchProducts from "../services/productService"
 import { Product } from "../types/Product"
@@ -25,7 +26,7 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
-  const filterProducts = (data: FilterFormData) => {
+  const filterProducts = useCallback((data: FilterFormData) => {
     const filtered = products.filter((product) => {
       const matchesFamily = data.family ? product.family === data.family : true
       const matchesLength =
@@ -36,16 +37,18 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
     })
 
     setFilteredProducts(filtered)
-  }
+  }, [products])
 
   const clearProducts = () => setFilteredProducts(products)
 
   const loadProducts = async () => {
     try {
-      setIsLoading(true)
       const data = await fetchProducts()
+
       setProducts(data)
       setFilteredProducts(data)
+    } catch (error) {
+      console.error("Error in loadProducts:", error)
     } finally {
       setIsLoading(false)
     }

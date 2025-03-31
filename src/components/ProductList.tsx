@@ -1,9 +1,13 @@
+import { useMemo } from "react"
 import { useProductContext } from "../context/ProductContext"
 import ProductCard from "./ProductCard"
 import { useTranslation } from "react-i18next"
 const ProductList = () => {
   const { filteredProducts, isLoading } = useProductContext()
   const { t } = useTranslation()
+
+  const products = useMemo(() => filteredProducts, [filteredProducts])
+  
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-[400px]">
@@ -29,7 +33,7 @@ const ProductList = () => {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
-      {filteredProducts.map((product) => (
+      {products.map((product) => (
         <ProductCard key={`${product.id}`} product={product} />
       ))}
     </div>
