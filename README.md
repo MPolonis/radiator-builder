@@ -17,7 +17,7 @@ A web application built with React and TypeScript.
 ## Prerequisites
 
 Before you begin, ensure you have the following installed:
-- Node.js (version 16 or higher)
+- Node.js (version 20 or higher)
 - npm or yarn package manager
 
 ## Getting Started

@@ -7,7 +7,7 @@ const ProductList = () => {
   const { t } = useTranslation()
 
   const products = useMemo(() => filteredProducts, [filteredProducts])
-  
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-[400px]">
