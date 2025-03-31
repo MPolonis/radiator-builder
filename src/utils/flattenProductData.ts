@@ -1,7 +1,4 @@
 import { Product } from "../types/Product"
-
-
-
 interface LengthData {
   id?: string
   sections?: number
@@ -57,7 +54,10 @@ const extractProductsFromFamily = (family: FamilyData): Product[] => {
   )
 }
 
-const extractProductsFromDepth = (depth: DepthData, familyId: string): Product[] => {
+const extractProductsFromDepth = (
+  depth: DepthData,
+  familyId: string
+): Product[] => {
   const depthMM = depth.depth ?? 0
   const heights = depth.heights ?? {}
 
