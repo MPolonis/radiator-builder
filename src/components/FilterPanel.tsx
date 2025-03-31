@@ -3,14 +3,14 @@ import { useProductContext } from "../context/ProductContext"
 import { useTranslation } from "react-i18next"
 import Input from "./common/Input"
 
-interface FilterFormData {
+export interface FilterFormData {
   family: string
   minLength: string
   maxLength: string
 }
 
 const FilterPanel = () => {
-  const { products, setFilteredProducts } = useProductContext()
+  const { products, clearProducts, filterProducts } = useProductContext()
   const {
     register,
     handleSubmit,
@@ -25,20 +25,11 @@ const FilterPanel = () => {
   })
   const { t } = useTranslation()
 
-  const onSubmit = (data: FilterFormData) => {
-    const filtered = products.filter((product) => {
-      const matchesFamily = data.family ? product.family === data.family : true
-      const matchesLength =
-        (!data.minLength || product.length >= Number(data.minLength)) &&
-        (!data.maxLength || product.length <= Number(data.maxLength))
-      return matchesFamily && matchesLength
-    })
-    setFilteredProducts(filtered)
-  }
+  const onSubmit = (data: FilterFormData) => filterProducts(data)
 
   const handleClear = () => {
     reset()
-    setFilteredProducts(products)
+    clearProducts()
   }
 
   const uniqueFamilies = Array.from(new Set(products.map((p) => p.family)))
@@ -71,7 +62,7 @@ const FilterPanel = () => {
           error={errors.minLength?.message}
           {...register("minLength", {
             min: { value: 0, message: t("validation.minLength") },
-            pattern: { value: /^[0-9]*$/, message: t("validation.minLength") }
+            pattern: { value: /^[0-9]*$/, message: t("validation.minLength") },
           })}
         />
 
@@ -82,7 +73,7 @@ const FilterPanel = () => {
           error={errors.maxLength?.message}
           {...register("maxLength", {
             min: { value: 0, message: t("validation.maxLength") },
-            pattern: { value: /^[0-9]*$/, message: t("validation.maxLength") }
+            pattern: { value: /^[0-9]*$/, message: t("validation.maxLength") },
           })}
         />
 

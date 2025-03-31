@@ -7,11 +7,14 @@ import {
 } from "react"
 import fetchProducts from "../services/productService"
 import { Product } from "../types/Product"
+import { FilterFormData } from "../components/FilterPanel"
 
 interface ProductContextType {
   products: Product[]
   filteredProducts: Product[]
   setFilteredProducts: React.Dispatch<React.SetStateAction<Product[]>>
+  filterProducts: (data: FilterFormData) => void
+  clearProducts: () => void
   isLoading: boolean
 }
 
@@ -22,23 +25,46 @@ export const ProductProvider = ({ children }: { children: ReactNode }) => {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
-  useEffect(() => {
-    const loadProducts = async () => {
-      try {
-        setIsLoading(true)
-        const data = await fetchProducts()
-        setProducts(data)
-        setFilteredProducts(data)
-      } finally {
-        setIsLoading(false)
-      }
+  const filterProducts = (data: FilterFormData) => {
+    const filtered = products.filter((product) => {
+      const matchesFamily = data.family ? product.family === data.family : true
+      const matchesLength =
+        (!data.minLength || product.length >= Number(data.minLength)) &&
+        (!data.maxLength || product.length <= Number(data.maxLength))
+
+      return matchesFamily && matchesLength
+    })
+
+    setFilteredProducts(filtered)
+  }
+
+  const clearProducts = () => setFilteredProducts(products)
+
+  const loadProducts = async () => {
+    try {
+      setIsLoading(true)
+      const data = await fetchProducts()
+      setProducts(data)
+      setFilteredProducts(data)
+    } finally {
+      setIsLoading(false)
     }
+  }
+
+  useEffect(() => {
     loadProducts()
   }, [])
 
   return (
     <ProductContext.Provider
-      value={{ products, filteredProducts, setFilteredProducts, isLoading }}
+      value={{
+        products,
+        filteredProducts,
+        setFilteredProducts,
+        isLoading,
+        filterProducts,
+        clearProducts,
+      }}
     >
       {children}
     </ProductContext.Provider>
