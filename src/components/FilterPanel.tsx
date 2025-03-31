@@ -1,6 +1,8 @@
 import { useForm } from "react-hook-form"
 import { useProductContext } from "../context/ProductContext"
 import { useTranslation } from "react-i18next"
+import Input from "./common/Input"
+
 interface FilterFormData {
   family: string
   minLength: string
@@ -62,41 +64,27 @@ const FilterPanel = () => {
           </select>
         </div>
 
-        <div className="flex flex-col relative">
-          <label className="text-sm mb-1">{t("filter.lengthFrom")}</label>
-          <input
-            type="number"
-            className="border rounded px-3 py-2"
-            {...register("minLength", {
-              min: { value: 0, message: t("validation.minLength") },
-              pattern: { value: /^[0-9]*$/, message: t("validation.minLength") }
-            })}
-            placeholder="0"
-          />
-          {errors.minLength && (
-            <span className="text-red-500 text-sm mt-1 absolute bottom-[-20px]">
-              {errors.minLength.message}
-            </span>
-          )}
-        </div>
+        <Input
+          label={t("filter.lengthFrom")}
+          type="number"
+          placeholder="0"
+          error={errors.minLength?.message}
+          {...register("minLength", {
+            min: { value: 0, message: t("validation.minLength") },
+            pattern: { value: /^[0-9]*$/, message: t("validation.minLength") }
+          })}
+        />
 
-        <div className="flex flex-col relative">
-          <label className="text-sm mb-1">{t("filter.lengthTo")}</label>
-          <input
-            type="number"
-            className="border rounded px-3 py-2"
-            {...register("maxLength", {
-              min: { value: 0, message: t("validation.maxLength") },
-              pattern: { value: /^[0-9]*$/, message: t("validation.maxLength") }
-            })}
-            placeholder="1000"
-          />
-          {errors.maxLength && (
-            <span className="text-red-500 text-sm mt-1 absolute bottom-[-20px]">
-              {errors.maxLength.message}
-            </span>
-          )}
-        </div>
+        <Input
+          label={t("filter.lengthTo")}
+          type="number"
+          placeholder="1000"
+          error={errors.maxLength?.message}
+          {...register("maxLength", {
+            min: { value: 0, message: t("validation.maxLength") },
+            pattern: { value: /^[0-9]*$/, message: t("validation.maxLength") }
+          })}
+        />
 
         <div className="flex gap-2">
           <button
